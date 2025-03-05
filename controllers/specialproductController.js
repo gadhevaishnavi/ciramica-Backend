@@ -1,4 +1,4 @@
-import * as specialProductService from "../services/specialProductService.js";
+import * as specialProductService from '../services/specialproductService.js'
 
 // Controller to add a new product
 export const addProduct = async (req, res) => {
