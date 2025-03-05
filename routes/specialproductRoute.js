@@ -1,21 +1,13 @@
-import express from "express";
-import * as specialProductController from "../controllers/specialproductController.js";
+import express from 'express';
+import { createProduct, getProducts, getProduct, updateProduct, deleteProduct } from '../controllers/specialproductController.js';
 
 const specialRoute = express.Router();
 
-// Route to add a new product
-specialRoute.post("/", specialProductController.addProduct);
-
-// Route to get all products
-specialRoute.get("/", specialProductController.getAllProducts);
-
-// Route to get a product by ID
-specialRoute.get("/:id", specialProductController.getProductById);
-
-// Route to update a product by ID
-specialRoute.put("/update/:id", specialProductController.updateProductById);
-
-// Route to delete a product by ID
-specialRoute.delete("/delete/:id", specialProductController.deleteProductById);
+// Routes for product operations
+specialRoute.post('/products', createProduct); // Add new product
+specialRoute.get('/products', getProducts); // Get all products
+specialRoute.get('/products/:id', getProduct); // Get a product by ID
+specialRoute.put('/products/:id', updateProduct); // Update product by ID
+specialRoute.delete('/products/:id', deleteProduct); // Delete product by ID
 
 export default specialRoute;
