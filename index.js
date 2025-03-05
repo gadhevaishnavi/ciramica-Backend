@@ -4,6 +4,7 @@ import productRoute from "./routes/productRoute.js";
 import dbConnect from "./db/connectionDB.js";
 import dotenv from "dotenv";
 import featureRoute from "./routes/featureproductRoute.js";
+import specialRoute from "./routes/specialproductRoute.js";
 
 dotenv.config(); // Load environment variables
 const app = express();
@@ -22,6 +23,7 @@ dbConnect(process.env.DBURL, process.env.DBNAME);
 // Routes
 app.use("/product", productRoute);
 app.use('/featureProduct',featureRoute)
+app.use('/specialProduct',specialRoute)
 
 // Start the server
 app.listen(PORT, () => {
