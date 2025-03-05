@@ -3,17 +3,19 @@ import * as specialProductController from "../controllers/specialProductControll
 
 const specialRoute = express.Router();
 
-// Routes for special products
-specialRoute.post("/", specialProductController.addProduct); // Add a new product
-specialRoute.get("/", specialProductController.getAllProducts); // Get all products
-specialRoute.get("/:id", specialProductController.getProductById); // Get product by ID
-specialRoute.get("/reference/:reference", specialProductController.getProductByReference); // Get product by reference
-specialRoute.put("/id/:id", specialProductController.updateProductById); // Update product by ID
-specialRoute.put("/reference/:reference", specialProductController.updateProductByReference); // Update product by reference
-specialRoute.delete("/id/:id", specialProductController.deleteProductById); // Delete product by ID
-specialRoute.delete("/reference/:reference", specialProductController.deleteProductByReference); //Delete product by reference
-specialRoute.get("/brand/:brand", specialProductController.getProductsByBrand); // Get products by brand
-specialRoute.get("/price-range", specialProductController.getProductsByPriceRange); // Get products in price range
-specialRoute.put("/stock/:reference", specialProductController.updateProductStock); // Update product stock
+// Route to add a new product
+specialRoute.post("/", specialProductController.addProduct);
+
+// Route to get all products
+specialRoute.get("/", specialProductController.getAllProducts);
+
+// Route to get a product by ID
+specialRoute.get("/:id", specialProductController.getProductById);
+
+// Route to update a product by ID
+specialRoute.put("/update/:id", specialProductController.updateProductById);
+
+// Route to delete a product by ID
+specialRoute.delete("/delete/:id", specialProductController.deleteProductById);
 
 export default specialRoute;
