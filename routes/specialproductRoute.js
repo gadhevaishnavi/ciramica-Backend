@@ -1,16 +1,19 @@
-import express from 'express';
-import * as specialproductController from '../controllers/specialproductController.js';
+import express from "express";
+import * as specialProductController from "../controllers/specialProductController.js";
 
 const specialRoute = express.Router();
 
-// Define the routes
-specialRoute.post('/', specialproductController.addProductController);
-specialRoute.get('/', specialproductController.getAllProductsController);
-specialRoute.get('/:reference', specialproductController.getProductByReferenceController);
-specialRoute.put('/:reference', specialproductController.updateProductByReferenceController);
-specialRoute.delete('/:reference', specialproductController.deleteProductByReferenceController);
-specialRoute.get('/brand/:brand', specialproductController.getProductsByBrandController);
-specialRoute.get('/price', specialproductController.getProductsByPriceRangeController);
-specialRoute.put('/stock/:reference', specialproductController.updateProductStockController);
+// Routes for special products
+specialRoute.post("/", specialProductController.addProduct); // Add a new product
+specialRoute.get("/", specialProductController.getAllProducts); // Get all products
+specialRoute.get("/:id", specialProductController.getProductById); // Get product by ID
+specialRoute.get("/reference/:reference", specialProductController.getProductByReference); // Get product by reference
+specialRoute.put("/id/:id", specialProductController.updateProductById); // Update product by ID
+specialRoute.put("/reference/:reference", specialProductController.updateProductByReference); // Update product by reference
+specialRoute.delete("/id/:id", specialProductController.deleteProductById); // Delete product by ID
+specialRoute.delete("/reference/:reference", specialProductController.deleteProductByReference); //Delete product by reference
+specialRoute.get("/brand/:brand", specialProductController.getProductsByBrand); // Get products by brand
+specialRoute.get("/price-range", specialProductController.getProductsByPriceRange); // Get products in price range
+specialRoute.put("/stock/:reference", specialProductController.updateProductStock); // Update product stock
 
 export default specialRoute;

@@ -1,91 +1,93 @@
 import * as productService from "../services/productService.js";
 
 // Create a new product
-export const createProductController = async (req, res) => {
+export const createProduct = async (req, res) => {
     try {
-        const productData = req.body; // assuming the product data is in the request body
-        const newProduct = await productService.createProduct(productData);
-        res.status(201).json({ success: true, product: newProduct });
+        const product = await productService.createProduct(req.body);
+        res.status(201).json(product);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Get all products
-export const getAllProductsController = async (req, res) => {
+export const getAllProducts = async (req, res) => {
     try {
         const products = await productService.getAllProducts();
-        res.status(200).json({ success: true, products });
+        res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get a product by ID
+export const getProductById = async (req, res) => {
+    try {
+        const product = await productService.getProductById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Get a product by reference
-export const getProductByReferenceController = async (req, res) => {
+export const getProductByReference = async (req, res) => {
     try {
-        const { reference } = req.params;
-        const product = await productService.getProductByReference(reference);
-        if (!product) {
-            return res.status(404).json({ success: false, message: "Product not found" });
-        }
-        res.status(200).json({ success: true, product });
+        const product = await productService.getProductByReference(req.params.reference);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+        res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Update a product by reference
-export const updateProductByReferenceController = async (req, res) => {
+export const updateProductByReference = async (req, res) => {
     try {
-        const { reference } = req.params;
-        const updatedData = req.body;
-        const updatedProduct = await productService.updateProductByReference(reference, updatedData);
-        res.status(200).json({ success: true, product: updatedProduct });
+        const updatedProduct = await productService.updateProductByReference(req.params.reference, req.body);
+        res.status(200).json(updatedProduct);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Delete a product by reference
-export const deleteProductByReferenceController = async (req, res) => {
+export const deleteProductByReference = async (req, res) => {
     try {
-        const { reference } = req.params;
-        const deletedProduct = await productService.deleteProductByReference(reference);
-        res.status(200).json({ success: true, message: "Product deleted", product: deletedProduct });
+        const deletedProduct = await productService.deleteProductByReference(req.params.reference);
+        res.status(200).json({ message: "Product deleted successfully", deletedProduct });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Get products by brand
-export const getProductsByBrandController = async (req, res) => {
+export const getProductsByBrand = async (req, res) => {
     try {
-        const { brand } = req.params;
-        const products = await productService.getProductsByBrand(brand);
-        res.status(200).json({ success: true, products });
+        const products = await productService.getProductsByBrand(req.params.brand);
+        res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Get products in stock
-export const getProductsInStockController = async (req, res) => {
+export const getProductsInStock = async (req, res) => {
     try {
         const products = await productService.getProductsInStock();
-        res.status(200).json({ success: true, products });
+        res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
 // Search for products by name or description
-export const searchProductsController = async (req, res) => {
+export const searchProducts = async (req, res) => {
     try {
-        const { query } = req.query; // assuming the query parameter is sent as `?query=someSearchTerm`
-        const products = await productService.searchProducts(query);
-        res.status(200).json({ success: true, products });
+        const products = await productService.searchProducts(req.query.q);
+        res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };

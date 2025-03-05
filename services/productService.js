@@ -19,6 +19,15 @@ export const getAllProducts = async () => {
     }
 };
 
+// Get a product by ID
+export const getProductById = async (id) => {
+    try {
+        return await productModel.findById(id);
+    } catch (error) {
+        throw new Error(`Error fetching product by ID: ${error.message}`);
+    }
+};
+
 // Get a product by reference
 export const getProductByReference = async (reference) => {
     try {

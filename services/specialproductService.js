@@ -21,6 +21,19 @@ export const getAllProducts = async () => {
     }
 };
 
+// Service to get a product by its ID
+export const getProductById = async (id) => {
+    try {
+        const product = await specialproductModel.findById(id);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+        return product;
+    } catch (error) {
+        throw new Error('Error fetching product by ID: ' + error.message);
+    }
+};
+
 // Service to get a product by its reference
 export const getProductByReference = async (reference) => {
     try {
@@ -31,6 +44,23 @@ export const getProductByReference = async (reference) => {
         return product;
     } catch (error) {
         throw new Error('Error fetching product: ' + error.message);
+    }
+};
+
+// Service to update a product by its ID
+export const updateProductById = async (id, updatedData) => {
+    try {
+        const product = await specialproductModel.findByIdAndUpdate(
+            id,
+            updatedData,
+            { new: true, runValidators: true }
+        );
+        if (!product) {
+            throw new Error('Product not found');
+        }
+        return product;
+    } catch (error) {
+        throw new Error('Error updating product by ID: ' + error.message);
     }
 };
 
@@ -48,6 +78,19 @@ export const updateProductByReference = async (reference, updatedData) => {
         return product;
     } catch (error) {
         throw new Error('Error updating product: ' + error.message);
+    }
+};
+
+// Service to delete a product by its ID
+export const deleteProductById = async (id) => {
+    try {
+        const deletedProduct = await specialproductModel.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            throw new Error('Product not found');
+        }
+        return deletedProduct;
+    } catch (error) {
+        throw new Error('Error deleting product by ID: ' + error.message);
     }
 };
 
@@ -100,4 +143,3 @@ export const updateProductStock = async (reference, quantity) => {
         throw new Error('Error updating stock: ' + error.message);
     }
 };
-
