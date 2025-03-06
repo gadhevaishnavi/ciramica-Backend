@@ -24,7 +24,7 @@ featureRoute.get('/:productId', getFeatureProductByIdController);
 featureRoute.put('/:productsId', updateFeatureProductController);
 
 // Route to delete a feature product by its ID
-featureRoute.delete('/products/:productId', deleteFeatureProductController);
+featureRoute.delete('/:productId', deleteFeatureProductController);
 
 // Route to get products by brand
 featureRoute.get('/brand', getFeatureProductsByBrandController);
