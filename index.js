@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import featureRoute from "./routes/featureproductRoute.js";
 import specialRoute from "./routes/specialproductRoute.js";
 import blogRoute from "./routes/blogRoute.js";
+import userRoute from "./routes/UserRoute.js";
 
 dotenv.config(); // Load environment variables
 const app = express();
@@ -26,6 +27,7 @@ app.use("/product", productRoute);
 app.use('/featureProduct',featureRoute)
 app.use('/specialProduct',specialRoute)
 app.use('/blogPost',blogRoute)
+app.use('/user',userRoute)
 
 // Start the server
 app.listen(PORT, () => {
