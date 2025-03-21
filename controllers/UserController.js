@@ -30,22 +30,33 @@ export const register = async (req, res) => {
 // ✅ User Login
 export const userLogin = async (req, res) => {
     let { email, password } = req.body;
-    
+
     try {
+        console.log("Login request received with email:", email);
+
+        // Fetch user by email
         let user = await getUser(email);
+        console.log("User fetched from database:", user);
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Validate password
         let isValidPassword = await validatePassword(password, user.password);
+        console.log("Is password valid?", isValidPassword);
+
         if (!isValidPassword) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
+        // Generate JWT token
         let token = getToken({ email });
+        console.log("Generated JWT token:", token);
+
         return res.status(200).json({ token, message: "User login successful" });
     } catch (error) {
-        console.error("Error in userLogin:", error);
+        console.error("Error in userLogin:", error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 };
