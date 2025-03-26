@@ -1,16 +1,10 @@
-import express from "express";
-import { register, userLogin } from "../controllers/UserController.js";
-import { authenticateToken } from "../auth/jwtToken.js";
+import express from 'express';
+import { registerUser, loginUser, getAllUsers } from '../controllers/UserController.js';
 
 const userRoute = express.Router();
 
-// Register a new user
-userRoute.post("/register", register);
-
-// Login user
-userRoute.post("/login", userLogin);
-
-// Get user profile (Protected Route - Requires Token)
-userRoute.get("/profile/:email", authenticateToken);
+userRoute.post('/register', registerUser);
+userRoute.post('/login', loginUser);
+userRoute.get('/users', getAllUsers);  // ✅ Get all users
 
 export default userRoute;

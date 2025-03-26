@@ -1,62 +1,55 @@
-import { createUser, getUser, checkUserExists } from "../services/UserService.js";
-import { hashPasswordFun, validatePassword } from "../helper/encryption.js";
-import { getToken } from "../auth/jwtToken.js";
+import userModel from '../models/userModel.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-//  Register User
-export const register = async (req, res) => {
-    let { name, mobile, email, password } = req.body;
-    
+// Register User
+export const registerUser = async (req, res) => {
     try {
-        // Check if user already exists
-        if (await checkUserExists(email, mobile)) {
-            return res.status(400).json({ message: "User already registered" });
+        const { firstName, lastName, email, mobile, address, password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: "Passwords do not match" });
         }
 
-        // Hash password and create user
-        let hashedPassword = await hashPasswordFun(password);
-        let result = await createUser({ name, mobile, email, password: hashedPassword });
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        if (result.success) {
-            return res.status(201).json(result);
-        } else {
-            return res.status(400).json(result);
-        }
+        const newUser = new User({ firstName, lastName, email, mobile, address, password: hashedPassword });
+        await newUser.save();
+
+        res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-        console.error("Error in register:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: error.message });
     }
 };
 
-// ✅ User Login
-export const userLogin = async (req, res) => {
-    let { email, password } = req.body;
-
+// Login User
+export const loginUser = async (req, res) => {
     try {
-        console.log("Login request received with email:", email);
-
-        // Fetch user by email
-        let user = await getUser(email);
-        console.log("User fetched from database:", user);
+        const { email, password } = req.body;
+        const user = await userModel.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(400).json({ message: "User not found" });
         }
 
-        // Validate password
-        let isValidPassword = await validatePassword(password, user.password);
-        console.log("Is password valid?", isValidPassword);
-
-        if (!isValidPassword) {
-            return res.status(400).json({ message: "Invalid email or password" });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // Generate JWT token
-        let token = getToken({ email });
-        console.log("Generated JWT token:", token);
-
-        return res.status(200).json({ token, message: "User login successful" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ message: "Login successful", token });
     } catch (error) {
-        console.error("Error in userLogin:", error.message);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get All Users
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await userModel.find().select('-password'); // Password remove kela response madhun
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
