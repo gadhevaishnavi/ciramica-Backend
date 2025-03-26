@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import featureRoute from "./routes/featureproductRoute.js";
 import specialRoute from "./routes/specialproductRoute.js";
 import blogRoute from "./routes/blogRoute.js";
-import userRoute from "./routes/UserRoute.js";
+import userRoute from "./routes/userRoute.js";
 
 dotenv.config(); // Load environment variables
 const app = express();
